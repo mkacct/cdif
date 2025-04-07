@@ -1,0 +1,100 @@
+// cDIF v0.1
+// Madeline Kahn, 2025
+
+// syntax written in cBNF (https://github.com/mkacct/cbnf/blob/main/spec.md)
+
+<CDIF-VERSION> ::= "0.1" ;
+
+<EOL> ::= (? system-defined line terminator ?) ;
+<S> ::= {(? any whitespace character ?) | <comment>}* ;
+
+// comments:
+
+<comment> ::= <line-comment> | <block-comment> ;
+<line-comment> ::= "//" (? any string not containing LF or CR ?) <EOL> ;
+<block-comment> ::= "/*" (? any string not containing "*/" ?) "*/" ;
+
+// number support:
+
+<BIN> ::= "0" ("b"|"B") ;
+<OCT> ::= "0" ("o"|"O") ;
+<HEX> ::= "0" ("x"|"X") ;
+<EXP> ::= "e"|"E" ;
+
+<bin-digit> ::= "0" | "1" ;
+<oct-digit> ::= <bin-digit> | "2" | "3" | "4" | "5" | "6" | "7" ;
+<digit> ::= <oct-digit> | "8" | "9" ;
+<hex-digit> ::= <digit> | "a"|"A" | "b"|"B" | "c"|"C" | "d"|"D" | "e"|"E" | "f"|"F" ;
+
+// identifiers:
+
+<type-identifier> ::= <name> - <reserved-name> ;
+<name> ::= (<name-char> - (<digit> | "$")) {<name-char>}* ;
+<name-char> ::= (? any letter ?) | <digit> | "$" | "_" ; // see spec for details on "any letter"
+<reserved-name> ::= "infinity" | <boolean> | "null" | "undef" ;
+
+// literals:
+
+<literal> ::= <number> | <boolean> | <char> | <string> | "null" ;
+
+<number> ::= {<sign>}? (<integer> | <float> | "infinity") ;
+<sign> ::= "+" | "-" ;
+<opt-num-sep> ::= {"_"}? ;
+<integer> ::= <dec-int> | <bin-int> | <oct-int> | <hex-int> ;
+<dec-int> ::= <digit> {<opt-num-sep> <digit>}* ;
+<bin-int> ::= <BIN> <bin-digit> {<opt-num-sep> <bin-digit>}* ;
+<oct-int> ::= <OCT> <oct-digit> {<opt-num-sep> <oct-digit>}* ;
+<hex-int> ::= <HEX> <hex-digit> {<opt-num-sep> <hex-digit>}* ;
+<float> ::= (<dec-int> "." | {<dec-int>}? "." <dec-int>) {<EXP> {<sign>}? <dec-int>}? ;
+
+<boolean> ::= "true" | "false" ;
+
+<char> ::= "'" (<char-entity> - "'") "'" ;
+<char-entity> ::= ((? any printable character ?) - "\\") | <escape-sequence> ;
+<escape-sequence> ::= "\\" ("b" | "f" | "n" | "r" | "t" | "v" | "'" | "\"" | "\\" | "/"
+                          | "u" {<hex-digit>}[4] | "U" {<hex-digit>}[8]) ;
+<multiline-char-entity> ::= <char-entity> | <EOL> | "\\" <EOL> ;
+
+<string> ::= <standard-string> | <verbatim-string> | <block-string> | <verbatim-block-string> ;
+<standard-string> ::= "\"" {<char-entity> - "\""}* "\"" ;
+<verbatim-string> ::= "`" {(? any printable character ?) - "`"}* "`" ;
+<block-string> ::= (? at least 3 " then 0 or more <multiline-char-entity> until delimeter again ?) ; // see spec for details
+<verbatim-block-string> ::= (? at least 3 ` then 0 or more printable character or EOL until delimeter again ?) ; // see spec for details
+
+// file sections:
+
+// START:
+<file> ::= {<HEADER>}?
+           <main-section>
+           {<components-section>}? ;
+
+<HEADER> ::= "# cDIF " <CDIF-VERSION> <EOL> ;
+<COMPONENTS-DIRECTIVE> ::= "# components" <EOL> ;
+
+<main-section> ::= <S> <value> <S> {";" <S>}? <EOL> ;
+<components-section> ::= <COMPONENTS-DIRECTIVE> <S>
+                         <anon-object> <S> {";" <S>}? <EOL> ;
+
+// values and structures:
+
+<value> ::= <literal> | <structure> | <component-ref> ;
+<structure> ::= <object> | <collection> ;
+<component-ref> ::= "$" <name> ;
+<spread-expr> ::= "..." <S> <component-ref> ;
+
+<object> ::= <typed-object> | <anon-object> ;
+<typed-object> ::= <type-identifier> {<S> <anon-object>}? ;
+<anon-object> ::= "{" (
+                 <S> {{<object-entry> <S> "," <S>}* <object-entry> <S> {"," <S>}?}?
+               | <S> {{<object-entry> <S> ";" <S>}* <object-entry> <S> {";" <S>}?}?
+             ) "}" ;
+<object-entry> ::= <object-mapping> | <spread-expr> ;
+<object-mapping> ::= <name> <S> ":" <S> (<value> | "undef") ;
+
+<collection> ::= <typed-collection> | <anon-collection> ;
+<typed-collection> ::= <type-identifier> <S> <anon-collection> ;
+<anon-collection> ::= "[" (
+                     <S> {{<collection-entry> <S> "," <S>}* <collection-entry> <S> {"," <S>}?}?
+                   | <S> {{<collection-entry> <S> ";" <S>}* <collection-entry> <S> {";" <S>}?}?
+                 ) "]" ;
+<collection-entry> ::= <value> | <spread-expr> ;
