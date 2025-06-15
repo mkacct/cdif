@@ -1,6 +1,6 @@
 # cDIF specification
 
-cDIF v0.1  
+cDIF v0.1.1  
 Madeline Kahn, 2025
 
 ## Rationale
@@ -75,22 +75,19 @@ A "standard" string literal consists of zero or more character entities (as defi
 
 A "verbatim" string literal consists of zero or more printable characters (except `` ` ``) between backticks. Backslashes have no special meaning in this context. (Ex. `` `C:\Users` ``)
 
-A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a newline, or an escaped newline (i.e. a backslash followed by a newline). An escaped newline is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimeter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
+A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a newline, or an escaped newline (i.e. a backslash followed by a newline). An escaped newline is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimiter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
 
-A "verbatim block" string literal consists of zero or more printable characters and/or newlines between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimeter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
+A "verbatim block" string literal consists of zero or more printable characters and/or newlines between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimiter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
 
-Whitespace in block strings is handled as follows:
+Whitespace in block strings is handled as follows. Trailing whitespace (at the ends of lines) should already have been stripped (see [File syntax](#file-syntax)). In non-verbatim block strings, all whitespace handling occurs after escape sequences (including line continuations) are tokenized but before they are resolved.
 
-* If there are no line breaks, stop here; all whitespace is preserved.
-* Remove all trailing whitespace (at the ends of lines other than the last line).
-* If the first line contains no non-whitespace characters, remove the entire line including its following line break.
+1. If there are no line breaks, stop here; all whitespace is preserved.
+2. If the first line contains no non-whitespace characters, remove the entire line including its following line break.
 	* Otherwise, the first line is preserved as-is.
-* If the last line contains no non-whitespace characters, remove the entire line including its preceding line break.
+3. If the last line contains no non-whitespace characters, remove the entire line including its preceding line break.
 	* Otherwise, the last line is treated as a normal line.
-* Finally, the following applies to all remaining lines that contain at least one non-whitespace character (except for a potential preserved first line):
+4. Finally, the following applies to all remaining lines that contain at least one non-whitespace character (except for a potential preserved first line):
 	* Determine the longest sequence of whitespace characters shared by all lines. Remove this sequence from the beginning of each line. (For example, if each line is indented by at least two tab characters, remove two tab characters from the beginning of each line.)
-
-In non-verbatim block strings, all whitespace handling occurs before any escape sequences (including line continuations) are processed.
 
 As an example of the above rules, the following two strings are equivalent:
 
@@ -175,6 +172,8 @@ As an example, the following two collections are equivalent:
 ## File syntax
 
 A cDIF file's main content is a single value, which is the only required part of the file. This value may be followed by an optional final semicolon. Optional whitespace is allowed between most tokens. Other optional file contents are described below.
+
+Trailing whitespace at the ends of lines should always be ignored (including within block strings). Parsers should strip all trailing whitespace as a preprocessing step.
 
 ### Comments
 
