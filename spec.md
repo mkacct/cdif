@@ -86,7 +86,7 @@ Whitespace in block strings is handled as follows. Trailing whitespace (at the e
 	* Otherwise, the first line is preserved as-is.
 3. If the last line contains no non-whitespace characters, remove the entire line including its preceding line break.
 	* Otherwise, the last line is treated as a normal line.
-4. Finally, the following applies to all remaining lines that contain at least one non-whitespace character (except for a potential preserved first line):
+4. Finally, the following applies to all remaining non-empty lines (except for a potential preserved first line):
 	* Determine the longest sequence of whitespace characters shared by all lines. Remove this sequence from the beginning of each line. (For example, if each line is indented by at least two tab characters, remove two tab characters from the beginning of each line.)
 
 As an example of the above rules, the following two strings are equivalent:
