@@ -8,6 +8,8 @@
 <EOL> ::= (? system-defined line terminator ?) ;
 <S> ::= {(? any whitespace character ?) | <comment>}* ;
 
+<LITERAL-CHAR> ::= (? any printable character ?) | "\t" ;
+
 // comments:
 
 <comment> ::= <line-comment> | <block-comment> ;
@@ -50,16 +52,16 @@
 <boolean> ::= "true" | "false" ;
 
 <char> ::= "'" (<char-entity> - "'") "'" ;
-<char-entity> ::= ((? any printable character ?) - "\\") | <escape-sequence> ;
+<char-entity> ::= (<LITERAL-CHAR> - "\\") | <escape-sequence> ;
 <escape-sequence> ::= "\\" ("b" | "f" | "n" | "r" | "t" | "v" | "'" | "\"" | "\\" | "/"
                           | "u" {<hex-digit>}[4] | "U" {<hex-digit>}[8]) ;
 <multiline-char-entity> ::= <char-entity> | <EOL> | "\\" <EOL> ;
 
 <string> ::= <standard-string> | <verbatim-string> | <block-string> | <verbatim-block-string> ;
 <standard-string> ::= "\"" {<char-entity> - "\""}* "\"" ;
-<verbatim-string> ::= "`" {(? any printable character ?) - "`"}* "`" ;
+<verbatim-string> ::= "`" {<LITERAL-CHAR> - "`"}* "`" ;
 <block-string> ::= (? at least 3 " then 0 or more <multiline-char-entity> until delimeter again ?) ; // see spec for details
-<verbatim-block-string> ::= (? at least 3 ` then 0 or more printable character or EOL until delimeter again ?) ; // see spec for details
+<verbatim-block-string> ::= (? at least 3 ` then 0 or more <LITERAL-CHAR> or EOL until delimeter again ?) ; // see spec for details
 
 // file sections:
 

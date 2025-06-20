@@ -52,7 +52,11 @@ The special constants `true` and `false` (case-sensitive) are supported.
 
 #### Characters
 
-A character literal consists of a single character entity (except `'`) between single quotes (ex. `'A'`). A character entity is defined as a printable character (except `\`) or an escape sequence. The following escape sequences are supported:
+A character literal consists of a single character entity (except `'`) between single quotes (ex. `'A'`). A character entity is defined as a literal character (except `\`) or an escape sequence.
+
+"Literal character" refers to any printable (non-control) character, or the horizontal tabulation.
+
+The following escape sequences are supported:
 
 * `\b` – backspace
 * `\f` – form feed
@@ -73,11 +77,11 @@ cDIF supports four types of string literals:
 
 A "standard" string literal consists of zero or more character entities (as defined previously, except `"`) between double quotes. (Ex. `"Hello\nWorld"`)
 
-A "verbatim" string literal consists of zero or more printable characters (except `` ` ``) between backticks. Backslashes have no special meaning in this context. (Ex. `` `C:\Users` ``)
+A "verbatim" string literal consists of zero or more literal characters (as defined previously, except `` ` ``) between backticks. Backslashes have no special meaning in this context. (Ex. `` `C:\Users` ``)
 
 A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a newline, or an escaped newline (i.e. a backslash followed by a newline). An escaped newline is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimiter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
 
-A "verbatim block" string literal consists of zero or more printable characters and/or newlines between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimiter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
+A "verbatim block" string literal consists of zero or more literal characters (as defined previously) and/or newlines between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimiter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
 
 Whitespace in block strings is handled as follows. Trailing whitespace (at the ends of lines) should already have been stripped (see [File syntax](#file-syntax)). In non-verbatim block strings, all whitespace handling occurs after escape sequences (including line continuations) are tokenized but before they are resolved.
 
