@@ -79,11 +79,11 @@ A "standard" string literal consists of zero or more character entities (as defi
 
 A "verbatim" string literal consists of zero or more literal characters (as defined previously, except `` ` ``) between backticks. Backslashes have no special meaning in this context. (Ex. `` `C:\Users` ``)
 
-A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a newline, or an escaped newline (i.e. a backslash followed by a newline). An escaped newline is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimiter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
+A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a newline (treated literally), or an escaped newline (i.e. a backslash followed by a newline). An escaped newline is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimiter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
 
 A "verbatim block" string literal consists of zero or more literal characters (as defined previously) and/or newlines between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimiter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
 
-Whitespace in block strings is handled as follows. Trailing whitespace (at the ends of lines) should already have been stripped (see [File syntax](#file-syntax)). In non-verbatim block strings, all whitespace handling occurs after escape sequences (including line continuations) are tokenized but before they are resolved.
+Whitespace in block strings is handled as follows. Trailing whitespace (at the ends of lines) should already have been stripped (see [File syntax](#file-syntax)). In non-verbatim block strings, all whitespace handling occurs before any escape sequences are processed (including line continuations).
 
 1. If there are no line breaks, stop here; all whitespace is preserved.
 2. If the first line contains no non-whitespace characters, remove the entire line including its following line break.
