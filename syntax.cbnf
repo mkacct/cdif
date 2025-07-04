@@ -60,8 +60,9 @@
 <string> ::= <standard-string> | <verbatim-string> | <block-string> | <verbatim-block-string> ;
 <standard-string> ::= "\"" {<char-entity> - "\""}* "\"" ;
 <verbatim-string> ::= "`" {<LITERAL-CHAR> - "`"}* "`" ;
-<block-string> ::= (? at least 3 " then 0 or more <multiline-char-entity> until delimeter again ?) ; // see spec for details
-<verbatim-block-string> ::= (? at least 3 ` then 0 or more <LITERAL-CHAR> or <EOL> until delimeter again ?) ; // see spec for details
+<block-string> ::= (? at least 3 " then 0 or more <multiline-char-entity> until delimeter again ?) ;
+<verbatim-block-string> ::= (? at least 3 ` then 0 or more <LITERAL-CHAR> or <EOL> until delimeter again ?) ;
+// (see spec for details re. block strings)
 
 // file sections:
 
