@@ -61,7 +61,7 @@
 <standard-string> ::= "\"" {<char-entity> - "\""}* "\"" ;
 <verbatim-string> ::= "`" {<LITERAL-CHAR> - "`"}* "`" ;
 <block-string> ::= (? at least 3 " then 0 or more <multiline-char-entity> until delimeter again ?) ; // see spec for details
-<verbatim-block-string> ::= (? at least 3 ` then 0 or more <LITERAL-CHAR> or EOL until delimeter again ?) ; // see spec for details
+<verbatim-block-string> ::= (? at least 3 ` then 0 or more <LITERAL-CHAR> or <EOL> until delimeter again ?) ; // see spec for details
 
 // file sections:
 
