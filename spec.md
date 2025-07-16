@@ -5,7 +5,7 @@ Madeline Kahn, 2025
 
 ## Rationale
 
-cDIF is a textual data interchange format intended as an alternative to popular formats like JSON and YAML. It is designed to be easily readable and writable by users, as well as usable in many different software contexts. cDIF's notable attributes include:
+cDIF (/ˈsiːdɪf/) is a textual data interchange format intended as an alternative to popular formats like JSON and YAML. It is designed to be easily readable and writable by users, as well as usable in many different software contexts. cDIF's notable attributes include:
 
 * Intuitive syntax to JSON users
 * Useful features seen in more recent formats
