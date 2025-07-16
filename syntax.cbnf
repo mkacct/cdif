@@ -1,9 +1,9 @@
-// cDIF v0.1
+// cDIF v1.0
 // Madeline Kahn, 2025
 
 // syntax written in cBNF (https://github.com/mkacct/cbnf/blob/main/spec.md)
 
-<CDIF-VERSION> ::= "0.1" ;
+<CDIF-VERSION> ::= "1.0" ;
 
 <EOL> ::= (? system-defined line terminator ?) ;
 <S> ::= {(? any whitespace character ?) | <comment>}* ;
