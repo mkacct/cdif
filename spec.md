@@ -1,6 +1,6 @@
 # cDIF specification
 
-cDIF v1.0  
+cDIF v1.0.1  
 Madeline Kahn, 2025
 
 ## Rationale
@@ -198,7 +198,7 @@ A parser directive starts with `#` and must be the only content on its line. (Co
 While technically optional, it is recommended that all cDIF files include this directive to explicitly indicate the cDIF version in use. For the current version, you would use it like this:
 
 ```cdif
-# cDIF 1.0
+# cDIF 1.0.1
 ```
 
 The "cDIF" directive may only occur as the first line of the file.
@@ -225,10 +225,12 @@ Component references may be used in other components. Circular references are in
 
 The spread operator (`...`) may be employed by preceding a component reference used in an object or collection. In an object, a spread component reference should be used in place of an entire mapping. (In a collection, it should be used in place of a value.) The spread operator is only valid if the destination context and referenced component are either both objects or both collections. When using the spread operator, any type identifier on the spread component will always be ignored.
 
+Spread component references are not permitted in the top-level object of the components section itself.
+
 As an example of component references (including spread component references), the following two cDIF files are equivalent:
 
 ```cdif
-# cDIF 1.0
+# cDIF 1.0.1
 {
     name: $myName;
     displayColor: $hotPink;
@@ -253,7 +255,7 @@ As an example of component references (including spread component references), t
 ```
 
 ```cdif
-# cDIF 1.0
+# cDIF 1.0.1
 {
     name: "Maddie";
     displayColor: Color {red: 255, green: 51, blue: 153};
