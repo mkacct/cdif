@@ -19,6 +19,10 @@ cDIF (/ˈsiːdɪf/) is a textual data interchange format intended as an alternat
 
 The c stands for _cute_.
 
+## Grammar
+
+The included formal [grammar](syntax.cbnf) (written in [cBNF](https://github.com/mkacct/cbnf/blob/main/spec.md)) is part of this specification. It may be worth referencing for clarification on the syntax of certain constructs.
+
 ## Data syntax
 
 The main unit of cDIF data is the **value**, which may be represented by either a **literal**, **structure**, or **component reference**. Literals and structures are described below; component references will be described in the [Components](#components) section.
