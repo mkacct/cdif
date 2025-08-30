@@ -179,7 +179,7 @@ As an example, the following two collections are equivalent:
 
 ## File syntax
 
-A cDIF file's main content is a single value, which is the only required part of the file. This value may be followed by an optional final semicolon. Optional whitespace is allowed between most tokens. Other optional file contents are described below.
+A cDIF file's main content is a single value, which is the only required part of the file. This value may be followed by an optional final semicolon. Optional whitespace is allowed between most tokens (see grammar for details). Other optional file contents are described below.
 
 Trailing whitespace at the ends of lines should always be ignored (including within block strings). Parsers should strip all trailing whitespace as a preprocessing step.
 
