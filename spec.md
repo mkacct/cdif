@@ -111,7 +111,7 @@ As an example of the above rules, the following two strings are equivalent:
 ```
 
 ```cdif
-"function foo() {\n\treturn \"hi\";\n}\n\nlet bar = \"hello world\";"
+"function foo() {\n    return \"hi\";\n}\n\nlet bar = \"hello world\";"
 ```
 
 #### Null
