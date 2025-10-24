@@ -1,6 +1,6 @@
 # cDIF specification
 
-cDIF v1.0.1  
+cDIF v1.0.2  
 Madeline Kahn, 2025
 
 ## Rationale
@@ -83,9 +83,9 @@ A "standard" string literal consists of zero or more character entities (as defi
 
 A "verbatim" string literal consists of zero or more literal characters (as defined previously, except `` ` ``) between backticks. Backslashes have no special meaning in this context. (Ex. `` `C:\Users` ``)
 
-A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a newline (treated literally), or an escaped newline (i.e. a backslash followed by a newline). An escaped newline is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimiter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
+A "block" string literal consists of zero or more "multiline character entities" between triple double quotes (`"""`). A "multiline character entity" can be either a standard character entity, a line break (treated literally), or an escaped line break (i.e. a backslash followed by a line break). An escaped line break is called a "line continuation" and is considered to evaluate to the empty string. While likely rare, the delimiter may consist of more than three double quotes, requiring the same number of double quotes to close the string. Parsers should intuitively trim whitespace from the string in the manner described below.
 
-A "verbatim block" string literal consists of zero or more literal characters (as defined previously) and/or newlines between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimiter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
+A "verbatim block" string literal consists of zero or more literal characters (as defined previously) and/or line breaks between triple backticks (` ``` `). Backslashes have no special meaning in this context. Like normal block strings, the delimiter may consist of more than three backticks, requiring the same number of backticks to close the string. The below whitespace handling rules also apply.
 
 Whitespace in block strings is handled as follows. Trailing whitespace (at the ends of lines) should already have been stripped (see [File syntax](#file-syntax)). In non-verbatim block strings, all whitespace handling occurs before any escape sequences are processed (including line continuations).
 
@@ -97,7 +97,9 @@ Whitespace in block strings is handled as follows. Trailing whitespace (at the e
 4. Finally, the following applies to all remaining non-empty lines (except for a potential preserved first line):
 	* Determine the longest sequence of whitespace characters shared by all lines. Remove this sequence from the beginning of each line. (For example, if each line is indented by at least two tab characters, remove two tab characters from the beginning of each line.)
 
-As an example of the above rules, the following two strings are equivalent:
+The sequence of characters considered a "line break" may depend on the environment.
+
+As an example of the above rules, the following two strings are equivalent (assuming `"\n"` is the EOL sequence):
 
 ```cdif
 """
