@@ -204,7 +204,7 @@ A parser directive starts with `#` and must be the only content on its line. (Co
 While technically optional, it is recommended that all cDIF files include this directive to explicitly indicate the cDIF version in use. For the current version, you would use it like this:
 
 ```cdif
-# cDIF 1.0.1
+# cDIF 1.0.2
 ```
 
 The "cDIF" directive may only occur as the first line of the file.
@@ -236,7 +236,7 @@ Spread component references are not permitted in the top-level object of the com
 As an example of component references (including spread component references), the following two cDIF files are equivalent:
 
 ```cdif
-# cDIF 1.0.1
+# cDIF 1.0.2
 {
     name: $myName;
     displayColor: $hotPink;
@@ -261,7 +261,7 @@ As an example of component references (including spread component references), t
 ```
 
 ```cdif
-# cDIF 1.0.1
+# cDIF 1.0.2
 {
     name: "Maddie";
     displayColor: Color {red: 255, green: 51, blue: 153};
